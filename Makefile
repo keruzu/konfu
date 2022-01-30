@@ -27,5 +27,5 @@ json:
 	python -m json.tool app/src/*.json
 
 push:
-        git push -u origin $(shell git symbolic-ref --short HEAD)
+	git push -u origin $(shell git symbolic-ref --short HEAD)
 
