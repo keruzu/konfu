@@ -1,0 +1,8 @@
+# Ignore vi swap files
+*.swp
+
+# Misc dev env files
+.vscode
+
+# Do not capture save data
+app/src/data/*.json

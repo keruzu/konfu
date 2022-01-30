@@ -1,0 +1,13 @@
+
+Edit: Use fetch for making API calls.
+
+fetch(http://www.example.com/api/json/x/a/search.php?s=category)
+  .then(response => response.json())
+  .then((jsonData) => {
+    // jsonData is parsed json object received from url
+    console.log(jsonData)
+  })
+  .catch((error) => {
+    // handle your errors here
+    console.error(error)
+  })ZZ
