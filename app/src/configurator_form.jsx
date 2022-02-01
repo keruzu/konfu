@@ -44,7 +44,7 @@ class ConfigSelector extends React.Component {
 }
 */
 
-export default function Form({ onSubmit, formData }) {
+export default function Form({ schema, onSubmit, formData }) {
   return (
     <div className="container">
       <div className="row">
