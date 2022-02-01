@@ -44,12 +44,12 @@ class ConfigSelector extends React.Component {
 }
 */
 
-export default function Form({ onSubmit }) {
+export default function Form({ onSubmit, formData }) {
   return (
     <div className="container">
       <div className="row">
         <div className="col-md-6">
-          <JSONSchemaForm onSubmit={onSubmit} schema={postSchema} />
+          <JSONSchemaForm onSubmit={onSubmit} formData={formData} schema={postSchema} />
         </div>
       </div>
     </div>

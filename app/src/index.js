@@ -17,8 +17,9 @@ headers: { 'Content-Type': 'application/json',
       });
   }
 
+var formData = {}
 function App() {
-	return <Form onSubmit={saveData} />;
+	return <Form onSubmit={saveData} formData={formData} />;
 }
 
 const rootElement = document.getElementById("root");
