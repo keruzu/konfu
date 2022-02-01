@@ -1,5 +1,5 @@
 
-# import logging
+import logging
 # from logging.config import fileConfig
 import re
 from datetime import datetime
@@ -15,6 +15,9 @@ VERSION = "0.0.1"
 
 app = Flask(__name__)
 cors = CORS(app)
+
+log = logging.getLogger()
+logging.basicConfig()
 
 birth_time = datetime.now()
 
@@ -69,8 +72,9 @@ def saveConfig(config):
         configData = request.data.decode('utf-8')
         with open(filename, 'w') as fd:
             fd.write(configData)
-        status = {config: config, status: "Saved file"}
+        status = dict(config=config, status="Saved file")
     except Exception as ex:
+        log.error("Unable to save JSON config", extra=dict(filename=filename, ex_msg=str(ex)))
         return abort(500, f"Unable to save JSON config {filename}: {ex}")
     return jsonify(status)
 
@@ -101,5 +105,5 @@ def show_version():
 
 
 if __name__ == '__main__':
-    cors.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=8080)
 
