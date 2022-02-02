@@ -1,150 +1,131 @@
 {
-    "$id": "https://github.com/keruzu/trapmux/schema/trapmux.json",
+    "$id": "https://github.com/keruzu/konfu/app/src/schema/trapmux.json",
+    "type": "object",
+    "title": "SNMP Trap Mux",
     "description": "SNMP Trap Mux Configuration",
     "properties": {
-        "filters": {
-            "description": "A filter matches a condition and then executes an action",
-            "items": {
-                "properties": {
-                    "action": {
-                        "type": "string"
-                    },
-                    "plugin_args": {
-                        "additionalProperties": {
-                            "type": "string"
-                        },
-                        "type": "object"
-                    }
-                },
-                "type": "object"
-            },
-            "title": "Filters",
-            "type": "array"
-        },
         "general": {
+            "type": "object",
+            "title": "General Settings",
             "properties": {
                 "plugin_path": {
-                    "default": "txPlugins",
-                    "description": "Path to loadable plugins",
+                    "type": "string",
                     "title": "Plugin Path",
-                    "type": "string"
+                    "description": "Path to loadable plugins",
+                    "default": "txPlugins"
                 }
-            },
-            "title": "General Settings",
-            "type": "object"
-        },
-        "ipsets": {
-            "description": "An IP set is a named grouping of IP references eg CIDR, regexp, IP",
-            "title": "IP Sets",
-            "type": "object"
+            }
         },
         "listener": {
+            "type": "object",
+            "title": "SNMP Trap Listener Configuration",
             "description": "Settings that control SNMP trap reception",
             "properties": {
                 "auth_password": {
-                    "description": "Password for authentication",
-                    "format": "password",
+                    "type": "string",
                     "title": "Authentication Password",
-                    "type": "string"
+                    "description": "Password for authentication",
+                    "format": "password"
                 },
                 "auth_protocol": {
+                    "type": "string",
+                    "title": "Authentication Protocol",
                     "description": "Protocol for authenticating a connection",
                     "enum": [
                         "NoAuth",
                         "SHA",
                         "MD5"
-                    ],
-                    "title": "Authentication Protocol",
-                    "type": "string"
+                    ]
                 },
                 "gosnmp_debug": {
-                    "default": false,
-                    "description": "Show verbose logging of the underlying GoSNMP library",
+                    "type": "boolean",
                     "title": "GoSNMP Debug",
-                    "type": "boolean"
+                    "description": "Show verbose logging of the underlying GoSNMP library",
+                    "default": false
                 },
                 "gosnmp_debug_logfile_name": {
-                    "description": "Optional name to store debug-level information, otherwise goes to stdout",
+                    "type": "string",
                     "title": "GoSNMP Debug Logging File Name",
-                    "type": "string"
+                    "description": "Optional name to store debug-level information, otherwise goes to stdout"
                 },
                 "hostname": {
-                    "description": "For reporting purposes, how the system records its name",
+                    "type": "string",
                     "title": "Hostname",
-                    "type": "string"
+                    "description": "For reporting purposes, how the system records its name"
                 },
                 "ignore_versions": {
+                    "type": "string",
+                    "title": "SNMP Ignore Versions",
                     "description": "SNMP versions to support receive traps",
                     "enum": [
                         "v1",
                         "v2c",
                         "v3"
-                    ],
-                    "title": "SNMP Ignore Versions",
-                    "type": "string"
+                    ]
                 },
                 "listen_address": {
-                    "default": "0.0.0.0",
-                    "description": "What IPv4 / IPv6 address should this listen on?",
+                    "type": "string",
                     "title": "Listening Address",
-                    "type": "string"
+                    "description": "What IPv4 / IPv6 address should this listen on?",
+                    "default": "0.0.0.0"
                 },
                 "listen_port": {
-                    "default": 162,
-                    "description": "Receive SNMP traps on this port",
+                    "type": "number",
                     "title": "Listening Port",
-                    "type": "number"
+                    "description": "Receive SNMP traps on this port",
+                    "default": 162
                 },
                 "msg_flags": {
+                    "type": "string",
+                    "title": "SNMP v3 Security Options",
                     "description": "Authentication options for SNMP v3",
                     "enum": [
                         "NoAuthNoPriv",
                         "AuthNoPriv",
                         "AuthPriv"
-                    ],
-                    "title": "SNMP v3 Security Options",
-                    "type": "string"
+                    ]
                 },
                 "privacy_password": {
-                    "description": "Password for privacy",
+                    "type": "string",
                     "format": "password",
                     "title": "Privacy Password",
-                    "type": "string"
+                    "description": "Password for privacy"
                 },
                 "privacy_protocol": {
+                    "type": "string",
+                    "title": "Privacy Protocol",
                     "description": "Protocol for securing an existing connection",
                     "enum": [
                         "NoPriv",
                         "AES",
                         "DES"
-                    ],
-                    "title": "Privacy Protocol",
-                    "type": "string"
+                    ]
                 },
                 "snmp_community": {
-                    "description": "The SNMP Community is used as a simple control to prevent snooping",
+                    "type": "string",
                     "title": "SNMP Community",
-                    "type": "string"
+                    "description": "The SNMP Community is used as a simple control to prevent snooping"
                 },
                 "username": {
-                    "description": "User name used to authenticate",
+                    "type": "string",
                     "title": "Username",
-                    "type": "string"
+                    "description": "User name used to authenticate"
                 }
-            },
-            "title": "SNMP Trap Listener Configuration",
-            "type": "object"
+            }
         },
         "logging": {
+            "type": "object",
+            "title": "Logging Configuration",
             "properties": {
                 "compress_rotated_logs": {
-                    "default": true,
-                    "description": "Should old logs be compressed?",
+                    "type": "boolean",
                     "title": "Rotated Log Compression",
-                    "type": "boolean"
+                    "description": "Should old logs be compressed?",
+                    "default": true
                 },
                 "level": {
-                    "default": "info",
+                    "type": "string",
+                    "title": "Log Level",
                     "description": "Amount of logging detail to include",
                     "enum": [
                         "trace",
@@ -154,53 +135,72 @@
                         "error",
                         "critical"
                     ],
-                    "title": "Log Level",
-                    "type": "string"
+                    "default": "info"
                 },
                 "log_age_max_days": {
-                    "description": "Age in days of backup files to keep, maximum",
+                    "type": "number",
                     "title": "Log File Retention",
-                    "type": "number"
+                    "description": "Age in days of backup files to keep, maximum"
                 },
                 "log_backups_max": {
-                    "default": 7,
+                    "type": "number",
+                    "title": "Log File Backups",
                     "description": "Number of backup files to keep, maximum",
                     "minimum": 0,
-                    "title": "Log File Backups",
-                    "type": "number"
+                    "default": 7
                 },
                 "log_size_max": {
-                    "default": 1024,
-                    "description": "Size in MB",
+                    "type": "number",
                     "title": "Log Size (Max)",
-                    "type": "number"
+                    "description": "Size in MB",
+                    "default": 1024
                 }
-            },
-            "title": "Logging Configuration",
-            "type": "object"
+            }
         },
         "reporting": {
+            "type": "array",
+            "title": "Metric Reporting Plugin Configuration",
             "description": "These plugins determine what metrics to record and how to expose them",
             "items": {
+                "type": "object",
                 "properties": {
                     "action": {
-                        "description": "Name of the plugin",
+                        "type": "string",
                         "title": "Plugin",
+                        "description": "Name of the plugin"
+                    },
+                    "plugin_args": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+        "ipsets": {
+            "type": "object",
+            "title": "IP Sets",
+            "description": "An IP set is a named grouping of IP references eg CIDR, regexp, IP"
+        },
+        "filters": {
+            "type": "array",
+            "title": "Filters",
+            "description": "A filter matches a condition and then executes an action",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "action": {
                         "type": "string"
                     },
                     "plugin_args": {
+                        "type": "object",
                         "additionalProperties": {
                             "type": "string"
-                        },
-                        "type": "object"
+                        }
                     }
-                },
-                "type": "object"
-            },
-            "title": "Metric Reporting Plugin Configuration",
-            "type": "array"
+                }
+            }
         }
-    },
-    "title": "SNMP Trap Mux",
-    "type": "object"
 }
