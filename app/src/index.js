@@ -1,50 +1,54 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import axios from "axios"
-import Form from "./configurator_form";
+import JSONSchemaForm from "@rjsf/core";
 
-
-//const baseUrl = "http://localhost:8080/write?name=src/data/trapmux.json"
-  function saveData(formData) {
-    axios
-      .post("http://localhost:8080/save/trapmux", formData, {
-headers: { 'Content-Type': 'application/json', 
-     'Access-Control-Allow-Origin': '*'
-})
+const saveData = ({formData}) => {
+    axios.post("http://localhost:8080/save/trapmux", formData, {
+headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }})
       .then((response) => {
-        setPost(response.data);
+        return response.data;
       });
+};
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isSchemaLoading: true, schema: undefined, isConfigLoading: true, config: undefined };
   }
 
-function getSchema(name) {
+  componentDidMount() {
+    console.debug("After mount! Let's load data from API...");
+	  var name = "trapmux";
 	axios.get("http://localhost:8080/schema/" + name, {
-headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'
-	}})
-	.then((response) => { return response.data } );
-};
-var schema = getSchema("trapmux");
+headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }}
+    ).then(response => {
+      this.setState({ schema: response.data });
+      this.setState({ isSchemaLoading: false });
+    });
 
-function getConfig(name) {
 	axios.get("http://localhost:8080/load/" + name, {
-headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'
-	}})
-	.then((response) => { return response.data } );
-};
-var ConfigFileData = getConfig("trapmux");
+headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }}
+    ).then(response => {
+      this.setState({ config: response.data });
+      this.setState({ isConfigLoading: false });
+    });
+  }
 
-function App() {
-	return <Form schema={schema} onSubmit={saveData} formData={ConfigFileData} />;
+  render() {
+    const { isConfigLoading, isSchemaLoading, config, schema } = this.state;
+
+    if (isSchemaLoading || isConfigLoading) {
+      return <div className="App">Loading...</div>;
+    }
+
+    return (
+          <JSONSchemaForm onSubmit={saveData} formData={config} schema={schema} />
+    );
+  }
 }
 
-/*
-const App = () => {
-	const [formData, setFormData] = React.useState(null);
-	return <Form schema={schema} onSubmit={saveData} formData={configFileData} 
-		onChange={e => setFormData(e.formData)}/>;
-}
-
-*/
 
 const rootElement = document.getElementById("root");
-ReactDOM.render(<App />, rootElement);
+ReactDOM.render( <App />, rootElement);
 
