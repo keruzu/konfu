@@ -21,47 +21,10 @@
             "title": "SNMP Trap Listener Configuration",
             "description": "Settings that control SNMP trap reception",
             "properties": {
-                "auth_password": {
-                    "type": "string",
-                    "title": "Authentication Password",
-                    "description": "Password for authentication",
-                    "format": "password"
-                },
-                "auth_protocol": {
-                    "type": "string",
-                    "title": "Authentication Protocol",
-                    "description": "Protocol for authenticating a connection",
-                    "enum": [
-                        "NoAuth",
-                        "SHA",
-                        "MD5"
-                    ]
-                },
-                "gosnmp_debug": {
-                    "type": "boolean",
-                    "title": "GoSNMP Debug",
-                    "description": "Show verbose logging of the underlying GoSNMP library",
-                    "default": false
-                },
-                "gosnmp_debug_logfile_name": {
-                    "type": "string",
-                    "title": "GoSNMP Debug Logging File Name",
-                    "description": "Optional name to store debug-level information, otherwise goes to stdout"
-                },
                 "hostname": {
                     "type": "string",
                     "title": "Hostname",
                     "description": "For reporting purposes, how the system records its name"
-                },
-                "ignore_versions": {
-                    "type": "string",
-                    "title": "SNMP Ignore Versions",
-                    "description": "SNMP versions to support receive traps",
-                    "enum": [
-                        "v1",
-                        "v2c",
-                        "v3"
-                    ]
                 },
                 "listen_address": {
                     "type": "string",
@@ -75,6 +38,32 @@
                     "description": "Receive SNMP traps on this port",
                     "default": 162
                 },
+                "gosnmp_debug": {
+                    "type": "boolean",
+                    "title": "GoSNMP Debug",
+                    "description": "Show verbose logging of the underlying GoSNMP library",
+                    "default": false
+                },
+                "gosnmp_debug_logfile_name": {
+                    "type": "string",
+                    "title": "GoSNMP Debug Logging File Name",
+                    "description": "Optional name to store debug-level information, otherwise goes to stdout"
+                },
+                "ignore_versions": {
+                    "type": "string",
+                    "title": "SNMP Ignore Versions",
+                    "description": "SNMP versions to support receive traps",
+                    "enum": [
+                        "v1",
+                        "v2c",
+                        "v3"
+                    ]
+                },
+                "snmp_community": {
+                    "type": "string",
+                    "title": "SNMP Community",
+                    "description": "The SNMP Community is used as a simple control to prevent snooping"
+                },
                 "msg_flags": {
                     "type": "string",
                     "title": "SNMP v3 Security Options",
@@ -85,11 +74,26 @@
                         "AuthPriv"
                     ]
                 },
-                "privacy_password": {
+                "username": {
                     "type": "string",
-                    "format": "password",
-                    "title": "Privacy Password",
-                    "description": "Password for privacy"
+                    "title": "Username",
+                    "description": "User name used to authenticate"
+                },
+                "auth_protocol": {
+                    "type": "string",
+                    "title": "Authentication Protocol",
+                    "description": "Protocol for authenticating a connection",
+                    "enum": [
+                        "NoAuth",
+                        "SHA",
+                        "MD5"
+                    ]
+                },
+                "auth_password": {
+                    "type": "string",
+                    "title": "Authentication Password",
+                    "description": "Password for authentication",
+                    "format": "password"
                 },
                 "privacy_protocol": {
                     "type": "string",
@@ -101,15 +105,11 @@
                         "DES"
                     ]
                 },
-                "snmp_community": {
+                "privacy_password": {
                     "type": "string",
-                    "title": "SNMP Community",
-                    "description": "The SNMP Community is used as a simple control to prevent snooping"
-                },
-                "username": {
-                    "type": "string",
-                    "title": "Username",
-                    "description": "User name used to authenticate"
+                    "format": "password",
+                    "title": "Privacy Password",
+                    "description": "Password for privacy"
                 }
             }
         },
@@ -117,12 +117,6 @@
             "type": "object",
             "title": "Logging Configuration",
             "properties": {
-                "compress_rotated_logs": {
-                    "type": "boolean",
-                    "title": "Rotated Log Compression",
-                    "description": "Should old logs be compressed?",
-                    "default": true
-                },
                 "level": {
                     "type": "string",
                     "title": "Log Level",
@@ -137,6 +131,12 @@
                     ],
                     "default": "info"
                 },
+                "log_size_max": {
+                    "type": "number",
+                    "title": "Log Size (Max)",
+                    "description": "Size in MB",
+                    "default": 1024
+                },
                 "log_age_max_days": {
                     "type": "number",
                     "title": "Log File Retention",
@@ -149,11 +149,11 @@
                     "minimum": 0,
                     "default": 7
                 },
-                "log_size_max": {
-                    "type": "number",
-                    "title": "Log Size (Max)",
-                    "description": "Size in MB",
-                    "default": 1024
+                "compress_rotated_logs": {
+                    "type": "boolean",
+                    "title": "Rotated Log Compression",
+                    "description": "Should old logs be compressed?",
+                    "default": true
                 }
             }
         },
