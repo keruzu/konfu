@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import axios from "axios"
-import JSONSchemaForm from "@rjsf/core";
+import JSONSchemaForm from "@rjsf/material-ui";
 
 const saveData = ({formData}) => {
     axios.post("http://localhost:8080/save/trapmux", formData, {
