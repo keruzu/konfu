@@ -8,7 +8,8 @@ build: Dockerfile
 	docker build -t $(docker_tag) .
 
 run: stop build
-	docker run -d --rm  --name $(container) -v $(ROOT_DIR)/app/src/data:/app/src/data -p $(PORT):3000 -p 8080:8080 $(docker_tag)
+	#docker run -d --platform linux/amd64 --rm  --name $(container) -v $(ROOT_DIR)/app/src/data:/app/src/data -p $(PORT):3000 -p 8080:8080 $(docker_tag)
+	docker run --platform linux/amd64 --rm  --name $(container) -v $(ROOT_DIR)/app/src/data:/app/src/data -p $(PORT):3000 -p 8080:8080 $(docker_tag)
 
 make exec:
 	docker exec -it $(container) bash
