@@ -1,6 +1,7 @@
 {
   "name": "KonFu",
   "version": "1.0.0",
+  "license": "MIT",
   "description": "Load, edit and save configuration files",
   "keywords": ["json-schema", "form", "configuration"],
   "main": "src/index.js",
