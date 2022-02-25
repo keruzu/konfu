@@ -2,10 +2,10 @@
 
 set -e
 
-PRE_START=/app/prestart.bash
+PRE_START=/app/prestart.sh
 if [ -f $PRE_START ] ; then
     echo "Running script $PRE_START_PATH"
-    . $PRE_PRE_START
+    . $PRE_START
 fi
 
 # Sometimes /etc/resolv.conf does not get passed correctly into container

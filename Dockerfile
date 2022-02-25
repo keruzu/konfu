@@ -18,11 +18,14 @@ COPY supervisord/*.conf /etc/supervisor/conf.d
 #RUN rm /etc/supervisor/supervisord.conf
 RUN chown -R nginx:nginx /app
 RUN npm install -g yarn
-#USER appuser
+#USER nginx
 COPY ./app/package.json ./app/requirements.txt /app 
 RUN pip install --upgrade pip && pip install -r /app/requirements.txt
 
-COPY ./app /app
 WORKDIR /app
+RUN mkdir /app/node_modules && chown nginx /app /app/node_modules
+USER nginx
 RUN yarn install
+
+COPY ./app /app
 USER root
