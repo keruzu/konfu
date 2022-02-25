@@ -2,7 +2,7 @@
 
 if compgen -G "/app/etc/nginx*.conf" > /dev/null ; then
   echo "Found custom Nginx configuration..."
-  cp /app/etc/nginx*.conf /etc/nginx.conf.d
+  cp /app/etc/nginx*.conf /etc/nginx/conf.d
 fi
 
 if [[ -f /app/etc/custom-uwsgi.ini ]] ; then
