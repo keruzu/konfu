@@ -1,12 +1,12 @@
 
-import logging
-# from logging.config import fileConfig
-import re
+from http import HTTPStatus
 from datetime import datetime
 
 from flask import Flask, request, abort, render_template, jsonify, Response
 from flask_cors import CORS
 
+from defaultLogger import defaultLogger
+from ConfigManager import ConfigManager
 
 # -- Flask setup  --------
 CONTAINER_ID = open('/etc/hostname').read().strip()
@@ -16,8 +16,9 @@ VERSION = "0.0.1"
 app = Flask(__name__)
 cors = CORS(app)
 
-log = logging.getLogger()
-logging.basicConfig()
+log = defaultLogger('info')
+
+cfgmgr = ConfigManager(log=log)
 
 birth_time = datetime.now()
 
@@ -27,62 +28,35 @@ birth_time = datetime.now()
 def index():
     return render_template('index.html', version=VERSION)
 
-def getFile(source, path):
-    sane = pathClean(source)
-    if sane is None:
-        return abort(400, "Unable to parse source data name: {source}")
-    filename = f'src/{path}/{sane}.json'
-    try:
-        with open(filename, 'r') as fd:
-            data = fd.read()
-    except Exception as ex:
-        return abort(400, "Unable to read JSON configs: %s" % ex)
-
-    resp = Response(data, mimetype='application/json')
-    return resp
-
-def pathClean(base):
-    try:
-        filename = base.rsplit('/', 1)[-1]
-        return re.sub('[^\w]', '', filename)
-    except Exception:
-        pass
-
 @app.route('/schema/<schema>', methods=['GET'])
 def getSchema(schema):
-    return getFile(schema, path='schema')
+    status, data =  cfgmgr.getFile(schema, path='schema')
+    if status != HTTPStatus.OK:
+        return abort(status, data)
+
+    return data
 
 @app.route('/load/<config>', methods=['GET'])
 def getConfig(config):
-    return getFile(config, path='data')
+    status, data =  cfgmgr.getFile(config, path='data')
+    if status != HTTPStatus.OK:
+        return abort(status, data)
+
+    return data
 
 @app.route('/save/<config>', methods=['POST'])
 def saveConfig(config):
-    try:
-        raw_data = request.json
-    except Exception as ex:
-        return abort(400, f"Corrupted JSON message: {ex}")
+    status, msg = cfgmgr.saveConfig(request, config)
+    if status != HTTPStatus.OK:
+        return abort(status, msg)
 
-    if not raw_data:
-        return abort(400, "Empty JSON message")
-
-    saneConfig = pathClean(config)
-    filename = f'src/data/{saneConfig}.json'
-    try:
-        configData = request.data.decode('utf-8')
-        with open(filename, 'w') as fd:
-            fd.write(configData)
-        status = dict(config=config, status="Saved file")
-    except Exception as ex:
-        log.error("Unable to save JSON config", extra=dict(filename=filename, ex_msg=str(ex)))
-        return abort(500, f"Unable to save JSON config {filename}: {ex}")
-    return jsonify(status)
+    return jsonify(msg)
 
 @app.route('/liveness', methods=['GET'])
-def lineness():
+def liveness():
     uptime = datetime.now() - birth_time
     data = jsonify(dict(uptime=uptime))
-    mystatus = 200 # Use 5xxx if we have issues
+    mystatus = HTTPStatus.OK # Use 5xxx if we have issues
     response = Response(data, status=mystatus, mimetype='application/json')
     return response
 
