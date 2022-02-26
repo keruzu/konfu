@@ -10,8 +10,7 @@ from ConfigManager import ConfigManager
 
 # -- Flask setup  --------
 CONTAINER_ID = open('/etc/hostname').read().strip()
-# VERSION = open('/app/version').read().strip()
-VERSION = "0.0.1"
+VERSION = open('/app/version').read().strip()
 
 app = Flask(__name__)
 cors = CORS(app)
