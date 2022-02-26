@@ -29,7 +29,7 @@ def index():
 
 @app.route('/schema/<schema>', methods=['GET'])
 def getSchema(schema):
-    status, data =  cfgmgr.getFile(schema, path='schema')
+    status, data = cfgmgr.getFile(schema, path='schema')
     if status != HTTPStatus.OK:
         return abort(status, data)
 
@@ -37,7 +37,7 @@ def getSchema(schema):
 
 @app.route('/load/<config>', methods=['GET'])
 def getConfig(config):
-    status, data =  cfgmgr.getFile(config, path='data')
+    status, data = cfgmgr.getFile(config, path='data')
     if status != HTTPStatus.OK:
         return abort(status, data)
 
@@ -55,7 +55,7 @@ def saveConfig(config):
 def liveness():
     uptime = datetime.now() - birth_time
     data = jsonify(dict(uptime=uptime))
-    mystatus = HTTPStatus.OK # Use 5xxx if we have issues
+    mystatus = HTTPStatus.OK  # Use 5xxx if we have issues
     response = Response(data, status=mystatus, mimetype='application/json')
     return response
 
@@ -63,7 +63,7 @@ def liveness():
 def readiness():
     uptime = datetime.now() - birth_time
     data = jsonify(dict(uptime=uptime))
-    mystatus = 200 # Use 5xxx if we have issues
+    mystatus = HTTPStatus.OK  # Use 5xxx if we have issues
     response = Response(data, status=mystatus, mimetype='application/json')
     return response
 
