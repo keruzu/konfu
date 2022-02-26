@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <link rel="icon" type="image/png" href="/static/images/favicon16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="/static/images/favicon32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/static/images/favicon96x96.png" sizes="96x96" />
+</head>
+
+<body>
+    {% if not ishomepage %}
+    <div><a href="/">Homepage</a></div>
+    {% endif %}
+    <hr>
+    {% block content%}{% endblock %}
+</body>
+</html>
